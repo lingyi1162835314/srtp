@@ -1,0 +1,66 @@
+name: srtp
+description: libsrtp是一个实现SRTP协议(Secure Real-time Transport Protocol，安全实时传输协议)的库。
+keywords:                                      # 多标签
+  - RTP
+  - Security
+
+depends:                                       # 该组件依赖其他的组件
+  - libc
+  - minic
+
+build_config:
+  include:
+    - libsrtp-2.2.0/include
+    - libsrtp-2.2.0/test/include
+    - libsrtp-2.2.0/crypto/include
+
+  cflag: ''                             # C 编译器所需要要的编译参数
+  cxxflag: ''                         # CXX 编译器所需要要的编译参数
+  asmflag: ''                            # 汇编器所需要要参数
+  # define:                                      # 宏定义
+    # - CONFIG_XXX
+
+source_file:
+# libcrypt.a (the crypto engine)
+  - libsrtp-2.2.0/crypto/cipher/cipher.c
+  - libsrtp-2.2.0/crypto/cipher/null_cipher.cc
+  - libsrtp-2.2.0/crypto/cipher/aes.c
+  # - libsrtp-2.2.0/crypto/cipher/aes_icm_ossl.c
+  # - libsrtp-2.2.0/crypto/cipher/aes_gcm_ossl.c
+  - libsrtp-2.2.0/crypto/cipher/aes_icm.c
+
+# hashes
+  - libsrtp-2.2.0/crypto/hash/null_auth.c
+  - libsrtp-2.2.0/crypto/hash/sha1.c
+  - libsrtp-2.2.0/crypto/hash/hmac.c
+  # - libsrtp-2.2.0/crypto/hash/hmac_ossl.c
+  - libsrtp-2.2.0/crypto/hash/auth.c
+  # 0 crypto/hash/tmmhv2.c
+
+# replay
+  - libsrtp-2.2.0/crypto/replay/rdb.c
+  - libsrtp-2.2.0/crypto/replay/rdbx.c
+  - libsrtp-2.2.0/crypto/replay/ut_sim.c
+
+# math
+  - libsrtp-2.2.0/crypto/math/datatypes.c
+  - libsrtp-2.2.0/crypto/math/stat.c
+
+# kernel =
+  - libsrtp-2.2.0/crypto/kernel/crypto_kernel.c
+  - libsrtp-2.2.0/crypto/kernel/alloc.c
+  - libsrtp-2.2.0/crypto/kernel/key.c
+  - libsrtp-2.2.0/crypto/kernel/err.c
+  #- libsrtp-2.2.0/crypto/rng/rand_source.c
+  #- libsrtp-2.2.0/crypto/rng/prng.c
+  #- libsrtp-2.2.0/crypto/rng/ctr_prng.c
+
+# srtp
+  - libsrtp-2.2.0/srtp/srtp.c
+  - libsrtp-2.2.0/srtp/ekt.c
+
+
+install:
+  - dest: "include/srtp"
+    source:
+      - ibsrtp-2.2.0/include/*.h
